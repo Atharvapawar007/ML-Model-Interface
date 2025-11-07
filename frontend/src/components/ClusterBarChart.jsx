@@ -4,14 +4,32 @@
  */
 
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import ChartContainer from './ChartContainer';
+
+// Color palette for clusters - distinct colors
+const CLUSTER_COLORS = [
+  '#ef4444', // Red
+  '#3b82f6', // Blue
+  '#10b981', // Green
+  '#eab308', // Yellow
+  '#8b5cf6', // Purple
+  '#f97316', // Orange
+  '#06b6d4', // Cyan
+  '#ec4899', // Pink
+];
+
+// Get color for a specific cluster index
+const getClusterColor = (index) => {
+  return CLUSTER_COLORS[index % CLUSTER_COLORS.length];
+};
 
 function ClusterBarChart({ data, loading, error }) {
   const chartData = data?.map(item => ({
     cluster: `Cluster ${item.cluster}`,
     avgExamScore: item.avgExamScore,
-    count: item.count
+    count: item.count,
+    clusterIndex: item.cluster
   })) || [];
 
   return (
@@ -28,7 +46,11 @@ function ClusterBarChart({ data, loading, error }) {
             ]}
           />
           <Legend />
-          <Bar dataKey="avgExamScore" fill="#3b82f6" name="Average Exam Score" />
+          <Bar dataKey="avgExamScore" name="Average Exam Score">
+            {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={getClusterColor(entry.clusterIndex)} />
+            ))}
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </ChartContainer>
