@@ -60,6 +60,11 @@ CREATE TABLE IF NOT EXISTS student_data (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
+### IMPORTANT 
+```
+Local instance MySQL80 > Edit Connection > Advanced > Others > OPT_LOCAL_INFILE=1
+```
+
 ## 2. Import CSV Data
 
 ### Option A: Using LOAD DATA LOCAL INFILE (MySQL Command Line)
@@ -67,17 +72,16 @@ CREATE TABLE IF NOT EXISTS student_data (
 ```sql
 -- Enable local file loading (if needed)
 SET GLOBAL local_infile = 1;
+SHOW VARIABLES LIKE 'local_infile';
 
 -- Load data from CSV
-LOAD DATA LOCAL INFILE '/path/to/your/dataset.csv'
+LOAD DATA LOCAL INFILE 'path/to/your/dataset.csv'
 INTO TABLE student_data
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
-(StudyHours, Attendance, Resources, Extracurricular, Motivation, Internet, 
- Gender, Age, LearningStyle, OnlineCourses, Discussions, AssignmentCompletion, 
- ExamScore, EduTech, StressLevel, FinalGrade, Cluster, Level);
+(StudyHours, Attendance, Resources, Extracurricular, Motivation, Internet, Gender, Age, LearningStyle, OnlineCourses, Discussions, AssignmentCompletion, ExamScore, EduTech, StressLevel, FinalGrade, Cluster, Level);
 ```
 
 **Note:** Replace `/path/to/your/dataset.csv` with the actual path to your CSV file.
